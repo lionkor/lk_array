@@ -3,7 +3,7 @@ mkdir -p build
 echo "-> building..."
 cd build
 cmake ..
-make -j 9
+make -j9
 cd ..
 echo "-> running..."
 ./build/lk_array
