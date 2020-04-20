@@ -15,10 +15,12 @@
 
 #include <stdbool.h>
 
+/// Macro to simplify malloc's
 #define lk_new(type) (type*)LK_MALLOC(sizeof(type))
 
 typedef void (*callback_ptr)(const char*);
 
+// LkArray is the structure that holds all data concerning an lk_array.
 typedef struct {
     void*  data;
     size_t memb_size;
