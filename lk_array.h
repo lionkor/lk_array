@@ -20,7 +20,7 @@
 
 typedef void (*callback_ptr)(const char*);
 
-// lk_array is the structure that holds all data concerning an lk_array.
+/// Structure that holds all data concerning an array in this library.
 typedef struct {
     void*  data;
     size_t memb_size;
@@ -28,6 +28,8 @@ typedef struct {
     size_t capacity;
 } lk_array;
 
+/// Macro to use for freeing lk_arrays. Ensures pointer gets sanitized in
+/// an attempt to ensure use-after-free.
 #define lk_free_array(ptr)           \
     do {                             \
         lk_free_array_internal(ptr); \
@@ -42,11 +44,26 @@ lk_array* lk_new_array(size_t size, size_t member_size);
 /// Internal free() function for lk_arrays. Use lk_free_array instead.
 void lk_free_array_internal(lk_array* ptr);
 
+/// Copies data from src to dest.
 bool lk_array_deep_copy(lk_array* dest, lk_array* src);
 
+/// Pushes back (appends) the element pointed to by buf.
+/// buf may *not* be NULL. Only arr->memb_size bytes will be copied
+/// from buf. arr will be resized in the process.
+/// Returns false on error, true on success.
 bool lk_push_back(lk_array* arr, void* buf);
 
+/// Reserves (pre-allocates) enough memory to hold new_size elements of size
+/// arr->memb_size. Allows for resizing up to new_size without
+/// new allocations.
+/// Will fail if new_size < arr->size.
+/// Only increases capacity.
 bool lk_reserve(lk_array* arr, size_t new_size);
+
+/// Resizes the array to hold new_size elements of size arr->memb_size.
+/// Discards elements if new_size < arr->size (shrinking).
+/// Note that this isn't memory-greedy and will *not* reallocate if shrinking
+/// occurs. The capacity may remain the same after this.
 bool lk_resize(lk_array* arr, size_t new_size);
 
 /*
