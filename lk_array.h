@@ -20,13 +20,13 @@
 
 typedef void (*callback_ptr)(const char*);
 
-// LkArray is the structure that holds all data concerning an lk_array.
+// lk_array is the structure that holds all data concerning an lk_array.
 typedef struct {
     void*  data;
     size_t memb_size;
     size_t size;
     size_t capacity;
-} LkArray;
+} lk_array;
 
 #define lk_free_array(ptr)           \
     do {                             \
@@ -37,17 +37,17 @@ typedef struct {
 /// Allocates a new array using LK_MALLOC and LK_CALLOC.
 /// The returned pointer may be NULL on error (look at error handling below).
 /// The returned pointer, if not NULL, has to be free'd using lk_free_array.
-LkArray* lk_new_array(size_t size, size_t member_size);
+lk_array* lk_new_array(size_t size, size_t member_size);
 
-/// Internal free() function for LkArrays. Use lk_free_array instead.
-void lk_free_array_internal(LkArray* ptr);
+/// Internal free() function for lk_arrays. Use lk_free_array instead.
+void lk_free_array_internal(lk_array* ptr);
 
-bool lk_array_deep_copy(LkArray* dest, LkArray* src);
+bool lk_array_deep_copy(lk_array* dest, lk_array* src);
 
-bool lk_push_back(LkArray* arr, void* buf);
+bool lk_push_back(lk_array* arr, void* buf);
 
-bool lk_reserve(LkArray* arr, size_t new_size);
-bool lk_resize(LkArray* arr, size_t new_size);
+bool lk_reserve(lk_array* arr, size_t new_size);
+bool lk_resize(lk_array* arr, size_t new_size);
 
 /*
  * Error handling: 

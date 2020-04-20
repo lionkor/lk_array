@@ -45,7 +45,7 @@ int main() {
 
     {
         section("new array with size 0");
-        LkArray* arr = lk_new_array(0, sizeof(int));
+        lk_array* arr = lk_new_array(0, sizeof(int));
         test(arr != NULL);
         test(arr->data == NULL);
         test(arr->size == 0);
@@ -54,13 +54,13 @@ int main() {
 
     {
         section("new array with memb_size 0");
-        LkArray* arr = lk_new_array(5, 0);
+        lk_array* arr = lk_new_array(5, 0);
         test(arr == NULL);
     }
 
     {
         section("new array with memb_size 1 and size 1");
-        LkArray* arr = lk_new_array(1, 1);
+        lk_array* arr = lk_new_array(1, 1);
         test(arr != NULL);
         test(arr->capacity == 1);
         test(arr->size == 1);
@@ -70,9 +70,9 @@ int main() {
 
     {
         section("deep copy array size 1 to array size 1");
-        LkArray* source = lk_new_array(1, sizeof(int));
+        lk_array* source = lk_new_array(1, sizeof(int));
         test(source != NULL);
-        LkArray* dest = lk_new_array(1, sizeof(int));
+        lk_array* dest = lk_new_array(1, sizeof(int));
         test(dest != NULL);
         test(lk_array_deep_copy(dest, source));
         test(dest->size == 1);
@@ -90,9 +90,9 @@ int main() {
 
     {
         section("deep copy array size 1 to uninitialized array");
-        LkArray* source = lk_new_array(1, sizeof(int));
+        lk_array* source = lk_new_array(1, sizeof(int));
         test(source != NULL);
-        LkArray* dest = NULL;
+        lk_array* dest = NULL;
         test(lk_array_deep_copy(dest, source) == false);
         test(dest == NULL);
         test(source != NULL);
@@ -100,8 +100,8 @@ int main() {
 
     {
         section("deep copy uninitialized array to uninitialized array");
-        LkArray* source = NULL;
-        LkArray* dest   = NULL;
+        lk_array* source = NULL;
+        lk_array* dest   = NULL;
         test(lk_array_deep_copy(dest, source) == false);
         test(dest == NULL);
         test(source == NULL);
@@ -109,9 +109,9 @@ int main() {
 
     {
         section("deep copy larger array to smaller array");
-        LkArray* src = lk_new_array(10, sizeof(int));
+        lk_array* src = lk_new_array(10, sizeof(int));
         test(src != NULL);
-        LkArray* dest = lk_new_array(5, sizeof(int));
+        lk_array* dest = lk_new_array(5, sizeof(int));
         test(dest != NULL);
         test(lk_array_deep_copy(dest, src));
         test(dest->size == src->size);
@@ -122,9 +122,9 @@ int main() {
 
     {
         section("deep copy smaller array to larger array");
-        LkArray* src = lk_new_array(5, sizeof(int));
+        lk_array* src = lk_new_array(5, sizeof(int));
         test(src != NULL);
-        LkArray* dest = lk_new_array(10, sizeof(int));
+        lk_array* dest = lk_new_array(10, sizeof(int));
         test(dest != NULL);
         test(lk_array_deep_copy(dest, src));
         test(dest->size == src->size);
@@ -135,7 +135,7 @@ int main() {
 
     {
         section("reserve larger in empty array");
-        LkArray* arr = lk_new_array(0, sizeof(int));
+        lk_array* arr = lk_new_array(0, sizeof(int));
         test(arr != NULL);
         test(lk_reserve(arr, 5));
         test(arr->size == 0);
@@ -146,7 +146,7 @@ int main() {
 
     {
         section("reserve too small in empty array");
-        LkArray* arr = lk_new_array(10, sizeof(int));
+        lk_array* arr = lk_new_array(10, sizeof(int));
         test(arr != NULL);
         test(lk_reserve(arr, 5) == false);
         test(arr->size == 10);
@@ -157,7 +157,7 @@ int main() {
 
     {
         section("reserve same size");
-        LkArray* arr = lk_new_array(10, sizeof(int));
+        lk_array* arr = lk_new_array(10, sizeof(int));
         test(arr != NULL);
         test(lk_reserve(arr, 10) == true);
         test(arr->size == 10);
@@ -168,7 +168,7 @@ int main() {
 
     {
         section("resize to smaller");
-        LkArray* arr = lk_new_array(10, sizeof(int));
+        lk_array* arr = lk_new_array(10, sizeof(int));
         test(arr != NULL);
         test(lk_resize(arr, 5) == true);
         test(arr->size == 5);
@@ -179,7 +179,7 @@ int main() {
 
     {
         section("resize to larger");
-        LkArray* arr = lk_new_array(10, sizeof(int));
+        lk_array* arr = lk_new_array(10, sizeof(int));
         test(arr != NULL);
         test(lk_resize(arr, 15) == true);
         test(arr->size == 15);
@@ -190,7 +190,7 @@ int main() {
 
     {
         section("resize to same size");
-        LkArray* arr = lk_new_array(10, sizeof(int));
+        lk_array* arr = lk_new_array(10, sizeof(int));
         test(arr != NULL);
         test(lk_resize(arr, 10) == true);
         test(arr->size == 10);
@@ -211,7 +211,7 @@ int main() {
 
     {
         section("push_back to empty");
-        LkArray* arr = lk_new_array(0, sizeof(int));
+        lk_array* arr = lk_new_array(0, sizeof(int));
         test(arr != NULL);
         int value = 5;
         test(lk_push_back(arr, &value));
@@ -228,7 +228,7 @@ int main() {
 
     {
         section("push_back to existing");
-        LkArray* arr = lk_new_array(2, sizeof(int));
+        lk_array* arr = lk_new_array(2, sizeof(int));
         test(arr != NULL);
         int value = 5;
         test(lk_push_back(arr, &value));
@@ -257,7 +257,7 @@ int main() {
         test(my_other_data.i == 100);
         test(my_other_data.f == 603.0f);
 
-        LkArray* arr = lk_new_array(0, sizeof(struct dat));
+        lk_array* arr = lk_new_array(0, sizeof(struct dat));
         test(arr != NULL);
         test(arr->data == NULL);
         test(arr->size == 0);
@@ -293,7 +293,7 @@ int main() {
 
     {
         section("push_back NULL");
-        LkArray* arr = lk_new_array(0, sizeof(double));
+        lk_array* arr = lk_new_array(0, sizeof(double));
         test(arr != NULL);
         test(lk_push_back(arr, NULL) == false);
     }

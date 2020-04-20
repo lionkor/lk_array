@@ -31,13 +31,13 @@ void lk_setup_error_callback_stderr() {
     error_callback = stderr_handler;
 }
 
-LkArray* lk_new_array(size_t size, size_t memb_size) {
+lk_array* lk_new_array(size_t size, size_t memb_size) {
     if (memb_size == 0) {
         report_error("memb_size may never be 0");
         return NULL;
     }
 
-    LkArray* arr = lk_new(LkArray);
+    lk_array* arr = lk_new(lk_array);
     if (!arr) {
         report_error("LK_MALLOC failed");
         return NULL;
@@ -63,7 +63,7 @@ LkArray* lk_new_array(size_t size, size_t memb_size) {
     return arr;
 }
 
-void lk_free_array_internal(LkArray* ptr) {
+void lk_free_array_internal(lk_array* ptr) {
     if (!ptr) {
         // freeing a NULL ptr is okay, no error
         return;
@@ -72,7 +72,7 @@ void lk_free_array_internal(LkArray* ptr) {
     free(ptr);
 }
 
-bool lk_array_deep_copy(LkArray* dest, LkArray* src) {
+bool lk_array_deep_copy(lk_array* dest, lk_array* src) {
     if (!src) {
         report_error("source cannot be NULL");
         return false;
@@ -115,7 +115,7 @@ bool lk_array_deep_copy(LkArray* dest, LkArray* src) {
     return true;
 }
 
-bool lk_push_back(LkArray* arr, void* buf) {
+bool lk_push_back(lk_array* arr, void* buf) {
     if (!arr) {
         report_error("arr cannot be NULL");
         return false;
@@ -138,7 +138,7 @@ bool lk_push_back(LkArray* arr, void* buf) {
     return true;
 }
 
-bool lk_reserve(LkArray* arr, size_t new_size) {
+bool lk_reserve(lk_array* arr, size_t new_size) {
     if (!arr) {
         report_error("arr cannot be NULL");
         return false;
@@ -167,7 +167,7 @@ bool lk_reserve(LkArray* arr, size_t new_size) {
     return true;
 }
 
-bool lk_resize(LkArray* arr, size_t new_size) {
+bool lk_resize(lk_array* arr, size_t new_size) {
     if (!arr) {
         report_error("arr cannot be NULL");
         return false;
