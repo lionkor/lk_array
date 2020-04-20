@@ -9,4 +9,4 @@ add_executable(${CMAKE_PROJECT_NAME} main.c
     lk_array.c
 )
 
-#target_link_libraries(${CMAKE_PROJECT_NAME} )
+target_link_libraries(${CMAKE_PROJECT_NAME} m)
