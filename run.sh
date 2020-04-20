@@ -6,5 +6,5 @@ cmake ..
 make -j9
 cd ..
 echo "-> running..."
-./build/lk_array
+./build/lk_array_test
 echo "-> done!"
