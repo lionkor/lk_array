@@ -42,7 +42,7 @@ void lk_free_array_internal(LkArray* ptr);
 
 bool lk_array_deep_copy(LkArray* dest, LkArray* src);
 
-bool lk_append(LkArray* arr, void* buf);
+bool lk_push_back(LkArray* arr, void* buf);
 
 bool lk_reserve(LkArray* arr, size_t new_size);
 bool lk_resize(LkArray* arr, size_t new_size);

@@ -143,5 +143,159 @@ int main() {
         test(arr->capacity == 5);
         test(arr->data != NULL);
     }
+
+    {
+        section("reserve too small in empty array");
+        LkArray* arr = lk_new_array(10, sizeof(int));
+        test(arr != NULL);
+        test(lk_reserve(arr, 5) == false);
+        test(arr->size == 10);
+        test(arr->memb_size == sizeof(int));
+        test(arr->capacity == 10);
+        test(arr->data != NULL);
+    }
+
+    {
+        section("reserve same size");
+        LkArray* arr = lk_new_array(10, sizeof(int));
+        test(arr != NULL);
+        test(lk_reserve(arr, 10) == true);
+        test(arr->size == 10);
+        test(arr->memb_size == sizeof(int));
+        test(arr->capacity == 10);
+        test(arr->data != NULL);
+    }
+
+    {
+        section("resize to smaller");
+        LkArray* arr = lk_new_array(10, sizeof(int));
+        test(arr != NULL);
+        test(lk_resize(arr, 5) == true);
+        test(arr->size == 5);
+        test(arr->memb_size == sizeof(int));
+        test(arr->capacity == 10);
+        test(arr->data != NULL);
+    }
+
+    {
+        section("resize to larger");
+        LkArray* arr = lk_new_array(10, sizeof(int));
+        test(arr != NULL);
+        test(lk_resize(arr, 15) == true);
+        test(arr->size == 15);
+        test(arr->memb_size == sizeof(int));
+        test(arr->capacity == 15);
+        test(arr->data != NULL);
+    }
+
+    {
+        section("resize to same size");
+        LkArray* arr = lk_new_array(10, sizeof(int));
+        test(arr != NULL);
+        test(lk_resize(arr, 10) == true);
+        test(arr->size == 10);
+        test(arr->memb_size == sizeof(int));
+        test(arr->capacity == 10);
+        test(arr->data != NULL);
+    }
+
+    {
+        section("resize NULL");
+        test(lk_resize(NULL, 10) == false);
+    }
+
+    {
+        section("reserve NULL");
+        test(lk_reserve(NULL, 10) == false);
+    }
+
+    {
+        section("push_back to empty");
+        LkArray* arr = lk_new_array(0, sizeof(int));
+        test(arr != NULL);
+        int value = 5;
+        test(lk_push_back(arr, &value));
+        test(arr->size == 1);
+        int* data = (int*)arr->data;
+        test(data[0] == 5);
+        value = 10;
+        test(lk_push_back(arr, &value));
+        test(arr->size == 2);
+        data = (int*)arr->data;
+        test(data[0] == 5);
+        test(data[1] == 10);
+    }
+
+    {
+        section("push_back to existing");
+        LkArray* arr = lk_new_array(2, sizeof(int));
+        test(arr != NULL);
+        int value = 5;
+        test(lk_push_back(arr, &value));
+        test(arr->size == 3);
+        int* data = (int*)arr->data;
+        test(data[2] == 5);
+        value = 10;
+        test(lk_push_back(arr, &value));
+        test(arr->size == 4);
+        data = (int*)arr->data;
+        test(data[2] == 5);
+        test(data[3] == 10);
+    }
+
+    {
+        section("push_back struct");
+        // basically verifies that we can use any size item in the array
+        struct dat {
+            int   i;
+            float f;
+        } my_data                = { 5, 6.0f };
+        struct dat my_other_data = { 100, 603.0f };
+
+        test(my_data.i == 5);
+        test(my_data.f == 6.0f);
+        test(my_other_data.i == 100);
+        test(my_other_data.f == 603.0f);
+
+        LkArray* arr = lk_new_array(0, sizeof(struct dat));
+        test(arr != NULL);
+        test(arr->data == NULL);
+        test(arr->size == 0);
+        test(arr->capacity == 0);
+        test(arr->memb_size == sizeof(struct dat));
+
+        test(lk_push_back(arr, &my_data));
+
+        test(arr != NULL);
+        test(arr->data != NULL);
+        test(arr->size == 1);
+        test(arr->capacity == 1);
+        test(arr->memb_size == sizeof(struct dat));
+
+        struct dat* ptr = arr->data;
+        test(ptr[0].i == my_data.i);
+        test(ptr[0].f == my_data.f);
+
+        test(lk_push_back(arr, &my_other_data));
+
+        test(arr != NULL);
+        test(arr->data != NULL);
+        test(arr->size == 2);
+        test(arr->capacity == 2);
+        test(arr->memb_size == sizeof(struct dat));
+
+        ptr = arr->data;
+        test(ptr[0].i == my_data.i);
+        test(ptr[0].f == my_data.f);
+        test(ptr[1].i == my_other_data.i);
+        test(ptr[1].f == my_other_data.f);
+    }
+
+    {
+        section("push_back NULL");
+        LkArray* arr = lk_new_array(0, sizeof(double));
+        test(arr != NULL);
+        test(lk_push_back(arr, NULL) == false);
+    }
     report();
 }

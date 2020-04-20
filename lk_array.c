@@ -2,6 +2,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stdio.h>
+#include <stdint.h>
 
 static callback_ptr error_callback = NULL;
 
@@ -114,16 +115,25 @@ bool lk_array_deep_copy(LkArray* dest, LkArray* src) {
     return true;
 }
 
-bool lk_append(LkArray* arr, void* buf) {
+bool lk_push_back(LkArray* arr, void* buf) {
     if (!arr) {
         report_error("arr cannot be NULL");
         return false;
     }
 
-    if (!arr->data) {
+    if (!buf) {
+        report_error("buf cannot be NULL");
+        return false;
     }
 
-    memcpy(arr->data, buf, sizeof(arr->memb_size));
+    bool rc = lk_resize(arr, arr->size + 1);
+    if (!rc) {
+        report_error("lk_resize failed");
+        return false;
+    }
+
+    size_t index = arr->memb_size * (arr->size - 1);
+    memcpy(arr->data + index, buf, sizeof(arr->memb_size));
 
     return true;
 }
