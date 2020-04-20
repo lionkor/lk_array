@@ -1,6 +1,14 @@
 #ifndef LK_ARRAY_H
 #define LK_ARRAY_H
 
+/*
+ * lk_array.h
+ *
+ * Defines interface for handling the lk_array structure.
+ * 
+ * Read the README for usage examples.
+ */
+
 #include "userdef_memory.h"
 /* From this point onwards only macros should be used for
  * memory allocation / deallocation / reallocation.
@@ -45,6 +53,7 @@ lk_array* lk_new_array(size_t size, size_t member_size);
 void lk_free_array_internal(lk_array* ptr);
 
 /// Copies data from src to dest.
+/// Will fail if dest or src are NULL.
 bool lk_array_deep_copy(lk_array* dest, lk_array* src);
 
 /// Pushes back (appends) the element pointed to by buf.
@@ -65,6 +74,28 @@ bool lk_reserve(lk_array* arr, size_t new_size);
 /// Note that this isn't memory-greedy and will *not* reallocate if shrinking
 /// occurs. The capacity may remain the same after this.
 bool lk_resize(lk_array* arr, size_t new_size);
+
+/// Macro for simple access to values of specific type.
+/// Usage: int* my_value = lk_at(the_array, int, 5)
+/// to get index 5 as int*. Beware: returns NULL on failure.
+#define lk_at(arr, type, index) \
+    (type*)lk_at_raw(arr, index)
+
+/// Returns a void pointer to the specified index in the array.
+/// Returns NULL on failure (does bounds checking).
+void* lk_at_raw(lk_array* arr, size_t index);
+
+/// Equivalent of arr->data, except returns NULL if arr is NULL.
+void* lk_get_raw(lk_array* arr);
+
+/// Macro to simplify getting a type* (array of type `type`).
+/// Returns NULL on failure. sizeof(type) should match arr->memb_size.
+#define lk_get(arr, type) \
+    (type*)lk_get_raw(arr)
+
+/// Sets the value at the given index in the array.
+/// Does bounds checking, returns false on failure.
+bool lk_set(lk_array* arr, size_t index, void* value);
 
 /*
  * Error handling: 

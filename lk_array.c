@@ -199,3 +199,49 @@ bool lk_resize(lk_array* arr, size_t new_size) {
 
     return true;
 }
+
+void* lk_at_raw(lk_array* arr, size_t index) {
+    if (!arr) {
+        report_error("arr cannot be NULL");
+        return NULL;
+    }
+
+    if (index >= arr->size) {
+        report_error("index out of bounds");
+        return NULL;
+    }
+
+    if (!arr->data) {
+        report_error("arr->data is NULL ?!");
+        return NULL;
+    }
+
+    return arr->data + index * arr->memb_size;
+}
+
+void* lk_get_raw(lk_array* arr) {
+    if (!arr) {
+        report_error("arr cannot be NULL");
+        return NULL;
+    }
+
+    return arr->data;
+}
+
+bool lk_set(lk_array* arr, size_t index, void* value) {
+    void* data = lk_get_raw(arr);
+    if (!data) {
+        report_error("lk_get_raw failed");
+        return false;
+    }
+
+    if (index >= arr->size) {
+        report_error("index out of range");
+        return false;
+    }
+
+    data += index * arr->memb_size;
+    memcpy(data, value, arr->memb_size);
+
+    return true;
+}

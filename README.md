@@ -10,4 +10,13 @@ All it takes is adding `lk_array.c` and `lk_array.h` to your project!
 
 **Comes with tests!**
 
+## Examples
 
+Array holding 10 integers:
+```cpp
+lk_array* ints = lk_new_array(10, sizeof(int));
+
+int second = lk_at(int, 2);
+
+lk_free_array(ints);
+```

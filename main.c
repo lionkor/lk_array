@@ -297,5 +297,30 @@ int main() {
         test(arr != NULL);
         test(lk_push_back(arr, NULL) == false);
     }
+
+    {
+        section("lk_at int");
+        lk_array* arr = lk_new_array(0, sizeof(int));
+        test(arr != NULL);
+        int value = 151;
+        lk_push_back(arr, &value);
+        int* data = arr->data;
+        test(data[0] == value);
+        test(*lk_at(arr, int, 0) == value);
+    }
+
+    {
+        section("lk_set int");
+        lk_array* arr = lk_new_array(20, sizeof(int));
+        test(arr != NULL);
+        int value = 1513;
+        test(lk_set(arr, 14, &value));
+        test(lk_set(arr, 15, &value));
+        test(lk_set(arr, 16, &value));
+        test(*lk_at(arr, int, 14) == value);
+        test(*lk_at(arr, int, 15) == value);
+        test(*lk_at(arr, int, 16) == value);
+    }
+
     report();
 }
